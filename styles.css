@@ -706,6 +706,12 @@ body {
   color: var(--text-main);
 }
 
+.btn-clear-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .btn-clear {
   background: transparent;
   border: none;
@@ -717,8 +723,30 @@ body {
   cursor: pointer;
 }
 
+.btn-clear-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .btn-clear:hover {
   color: var(--accent-red);
+}
+
+.btn-seed {
+  background: transparent;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-main);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.btn-seed:hover {
+  color: #000000;
 }
 
 .side-card-body {
@@ -945,11 +973,11 @@ body {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  z-index: 100;
+  z-index: 9999;
 }
 
 .modal-backdrop.open {
-  display: flex;
+  display: flex !important;
 }
 
 .modal-card {
