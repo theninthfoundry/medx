@@ -22,7 +22,7 @@ public class HospitalRecordsApp extends JFrame {
     private DefaultTableModel patientsModel, doctorsModel, appointmentsModel, recordsModel;
 
     public HospitalRecordsApp() {
-        super("BLACKWELL — Hospital Records");
+        super("MEDX — Hospital Records");
         initDatabase();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(1050, 700));
@@ -60,7 +60,7 @@ public class HospitalRecordsApp extends JFrame {
         side.setLayout(new BoxLayout(side, BoxLayout.Y_AXIS));
         side.setBorder(new EmptyBorder(28, 18, 22, 18));
 
-        JLabel wordmark = new JLabel("BLACKWELL");
+        JLabel wordmark = new JLabel("MEDX");
         wordmark.setForeground(WHITE);
         wordmark.setFont(new Font("SansSerif", Font.BOLD, 25));
         wordmark.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -440,7 +440,7 @@ public class HospitalRecordsApp extends JFrame {
         return p;
     }
     private String required(JTextField f,String label){String s=f.getText().trim();if(s.isEmpty())throw new IllegalArgumentException(label+" is required.");return s;}
-    private void showError(String msg){JOptionPane.showMessageDialog(this,msg,"BLACKWELL",JOptionPane.ERROR_MESSAGE);}
+    private void showError(String msg){JOptionPane.showMessageDialog(this,msg,"MEDX",JOptionPane.ERROR_MESSAGE);}
     private void setStatus(String msg){status.setText("  "+msg.toUpperCase());}
     public static void main(String[] args){
         try{UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());}catch(Exception ignored){}

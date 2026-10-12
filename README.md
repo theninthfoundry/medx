@@ -1,17 +1,22 @@
-# BLACKWELL — Hospital Records
+# MEDX — Hospital Records
 
-A small, end-to-end Java desktop PBL built with Java Swing and SQLite. Black-and-white, bold-minimal UI; no logo or external images.
+A modern Java desktop hospital records management application built with Java Swing and SQLite.
 
 ## Requirements
 - JDK 17+
 - Maven 3.8+
 
-## Run
+## Run Locally
 From this folder:
 ```bash
 mvn clean compile exec:java
 ```
-The local database `blackwell.db` is created automatically in the project folder. Your records persist after closing the app.
+Or build the standalone executable JAR:
+```bash
+mvn clean package
+java -jar target/MEDX.jar
+```
+The local database `medx.db` / `blackwell.db` is created automatically in the project folder. Your records persist after closing the app.
 
 ## Features
 - Dashboard with patient, doctor and appointment counts
@@ -22,5 +27,8 @@ The local database `blackwell.db` is created automatically in the project folder
 - Input validation and confirmation before destructive actions
 - SQLite database with foreign keys and persistent storage
 
-## Notes
-This is an educational demo. Use fictional data only. It is not designed or certified for real patient care or production use.
+## GitHub Actions CI/CD
+On every push to `main`, GitHub Actions automatically:
+1. Compiles the Java code with JDK 17
+2. Packages a self-contained executable `MEDX.jar`
+3. Publishes it under GitHub **Releases** & **Artifacts** for 1-click download.
