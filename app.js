@@ -1,13 +1,13 @@
 /**
- * MEDX — Hospital Records System
- * Pure Minimalist Monochrome Client Application
- * Zero hardcoded dummy data • Local Storage persistence • Pure Black & White
+ * MEDX — Hospital Records & Clinical System
+ * Editorial Paper & Ink Architecture
+ * Zero hardcoded dummy data • Local Storage persistence
  */
 
 (function () {
   'use strict';
 
-  // --- INITIAL EMPTY SCHEMA (NO HARDCODED DATA) ---
+  // --- INITIAL EMPTY SCHEMA ---
   const DEFAULT_EMPTY_DATA = {
     patients: [],
     doctors: [],
@@ -16,8 +16,9 @@
   };
 
   // --- APPLICATION STATE ---
-  const STORAGE_KEY = 'medx_hospital_records_v2';
+  const STORAGE_KEY = 'medx_hospital_records_v3';
   let state = loadState();
+  let currentActiveView = 'dashboard';
 
   function loadState() {
     try {
@@ -52,7 +53,7 @@
     if (!container) return;
     const toast = document.createElement('div');
     toast.className = 'toast';
-    toast.innerHTML = `<span style="font-family:var(--font-mono); font-weight:700;">[OK]</span> <span>${escapeHtml(message)}</span>`;
+    toast.innerHTML = `<span style="font-family:var(--font-mono); font-weight:700;">•</span> <span>${escapeHtml(message)}</span>`;
     container.appendChild(toast);
 
     setTimeout(() => {
@@ -73,49 +74,79 @@
   }
 
   // --- NAVIGATION ---
+  const HERO_TITLES = {
+    dashboard: "RECORDS. IN ORDER.",
+    patients: "PATIENT ADMISSIONS.",
+    doctors: "ATTENDING PHYSICIANS.",
+    appointments: "SCHEDULED CONSULTATIONS.",
+    records: "CLINICAL ARCHIVES."
+  };
+
   function setupNavigation() {
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(btn => {
+    // Primary top nav & sub-nav tabs
+    document.querySelectorAll('[data-view]').forEach(btn => {
       btn.addEventListener('click', () => {
         const targetView = btn.dataset.view;
         switchView(targetView);
       });
     });
 
-    const btnGoAppointments = document.getElementById('btn-goto-appointments');
-    if (btnGoAppointments) {
-      btnGoAppointments.addEventListener('click', () => switchView('appointments'));
-    }
+    // Stat card shortcuts
+    document.querySelectorAll('[data-goto]').forEach(card => {
+      card.addEventListener('click', () => {
+        const targetView = card.dataset.goto;
+        switchView(targetView);
+      });
+    });
 
-    // Quick Action shortcuts on Dashboard
-    document.getElementById('qa-add-patient')?.addEventListener('click', () => openPatientModal());
-    document.getElementById('qa-add-doctor')?.addEventListener('click', () => openDoctorModal());
-    document.getElementById('qa-add-appointment')?.addEventListener('click', () => openAppointmentModal());
-    document.getElementById('qa-add-record')?.addEventListener('click', () => openRecordModal());
+    // Dashboard quick link
+    document.getElementById('link-goto-patients')?.addEventListener('click', () => switchView('patients'));
+
+    // Quick Action shortcuts on Right Side Card
+    document.getElementById('qa-patient')?.addEventListener('click', () => openPatientModal());
+    document.getElementById('qa-doctor')?.addEventListener('click', () => openDoctorModal());
+    document.getElementById('qa-appointment')?.addEventListener('click', () => openAppointmentModal());
+    document.getElementById('qa-record')?.addEventListener('click', () => openRecordModal());
+
+    // Filter pills
+    document.querySelectorAll('.filter-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const filter = pill.dataset.filter;
+        if (filter === 'ALL') switchView('dashboard');
+        else if (filter === 'PATIENTS') switchView('patients');
+        else if (filter === 'DOCTORS') switchView('doctors');
+        else if (filter === 'APPOINTMENTS') switchView('appointments');
+        else if (filter === 'RECORDS') switchView('records');
+      });
+    });
   }
 
   function switchView(viewName) {
-    document.querySelectorAll('.nav-item').forEach(b => {
+    currentActiveView = viewName;
+
+    // Update nav buttons
+    document.querySelectorAll('.nav-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.view === viewName);
     });
-    document.querySelectorAll('.view-section').forEach(sec => {
-      sec.classList.toggle('active', sec.id === `view-${viewName}`);
+    document.querySelectorAll('.sub-tab').forEach(b => {
+      b.classList.toggle('active', b.dataset.view === viewName);
     });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
 
-  // --- CLOCK & TIMERS ---
-  function initClock() {
-    const clockEl = document.getElementById('clock-display');
-    if (!clockEl) return;
-    function tick() {
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      const dateStr = now.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
-      clockEl.textContent = `${dateStr.toUpperCase()} • ${timeStr}`;
+    // Update view panels
+    document.querySelectorAll('.view-panel').forEach(p => {
+      p.classList.toggle('active', p.id === `view-${viewName}`);
+    });
+
+    // Update Hero Title
+    const heroTitleEl = document.getElementById('page-hero-title');
+    if (heroTitleEl && HERO_TITLES[viewName]) {
+      heroTitleEl.textContent = HERO_TITLES[viewName];
     }
-    tick();
-    setInterval(tick, 1000);
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // --- MODAL CONTROLLERS ---
@@ -142,8 +173,8 @@
     document.getElementById('btn-open-record-modal')?.addEventListener('click', () => openRecordModal());
 
     // Purge Data Button
-    document.getElementById('btn-clear-data')?.addEventListener('click', () => {
-      if (confirm("WARNING: Purge all hospital records from local database? This cannot be undone.")) {
+    document.getElementById('btn-purge-data')?.addEventListener('click', () => {
+      if (confirm("WARNING: Clear all hospital records from local database? This action cannot be reversed.")) {
         state = JSON.parse(JSON.stringify(DEFAULT_EMPTY_DATA));
         saveState();
         showToast("DATABASE PURGED • ALL RECORDS CLEARED");
@@ -206,7 +237,7 @@
 
   window.deletePatient = function(id) {
     const patient = getPatient(id);
-    if (confirm(`Delete patient "${patient.name}" and associated records?`)) {
+    if (confirm(`Delete patient "${patient.name}" and associated visits?`)) {
       state.patients = state.patients.filter(p => p.id !== id);
       state.appointments = state.appointments.filter(a => a.patientId !== id);
       state.records = state.records.filter(r => r.patientId !== id);
@@ -376,7 +407,7 @@
     document.getElementById('record-treatment').value = record ? record.treatment : '';
     document.getElementById('record-notes').value = record ? record.notes : '';
 
-    title.textContent = record ? "Edit Clinical Record" : "Add Clinical Record";
+    title.textContent = record ? "Edit Diagnostic Record" : "Add Diagnostic Record";
     modal.classList.add('open');
   }
 
@@ -402,7 +433,7 @@
       } else {
         const newId = state.records.length ? Math.max(...state.records.map(r => r.id)) + 1 : 1;
         state.records.push({ id: newId, ...recData });
-        showToast(`LOGGED: CLINICAL RECORD #${newId}`);
+        showToast(`LOGGED: RECORD #${newId}`);
       }
 
       document.getElementById('modal-record').classList.remove('open');
@@ -411,7 +442,7 @@
   }
 
   window.deleteRecord = function(id) {
-    if (confirm("Permanently delete this clinical case record?")) {
+    if (confirm("Permanently delete this clinical diagnostic record?")) {
       state.records = state.records.filter(r => r.id !== id);
       saveState();
       showToast(`DELETED: RECORD #${id}`);
@@ -441,20 +472,19 @@
         <div class="detail-box">${escapeHtml(rec.treatment)}</div>
       </div>
       <div class="detail-row">
-        <span class="detail-label">OBSERVATIONS & NOTES</span>
-        <div class="detail-box">${escapeHtml(rec.notes || "No notes entered.")}</div>
+        <span class="detail-label">CLINICAL NOTES</span>
+        <div class="detail-box">${escapeHtml(rec.notes || "No notes logged.")}</div>
       </div>
     `;
     document.getElementById('modal-view-record').classList.add('open');
   };
 
   // --- SEARCH FILTERS ---
-  function setupSearchFilters() {
-    document.getElementById('search-patients')?.addEventListener('input', renderPatients);
-    document.getElementById('search-doctors')?.addEventListener('input', renderDoctors);
-    document.getElementById('search-appointments')?.addEventListener('input', renderAppointments);
+  function setupSearchFilter() {
+    document.getElementById('global-search')?.addEventListener('input', () => {
+      renderApp();
+    });
     document.getElementById('filter-appointment-status')?.addEventListener('change', renderAppointments);
-    document.getElementById('search-records')?.addEventListener('input', renderRecords);
   }
 
   // --- RENDER APP ---
@@ -464,7 +494,7 @@
     renderDoctors();
     renderAppointments();
     renderRecords();
-    renderDashboardWidgets();
+    renderTodaySchedule();
   }
 
   function renderMetrics() {
@@ -473,26 +503,19 @@
     const aCount = state.appointments.length;
     const rCount = state.records.length;
 
-    // Sidebar badges
-    document.getElementById('badge-patients').textContent = pCount;
-    document.getElementById('badge-doctors').textContent = dCount;
-    document.getElementById('badge-appointments').textContent = aCount;
-    document.getElementById('badge-records').textContent = rCount;
-
-    // Dashboard metrics
     document.getElementById('metric-patients-count').textContent = pCount;
     document.getElementById('metric-doctors-count').textContent = dCount;
     document.getElementById('metric-appointments-count').textContent = aCount;
     document.getElementById('metric-records-count').textContent = rCount;
 
     const scheduled = state.appointments.filter(a => a.status === 'Scheduled').length;
-    document.getElementById('metric-scheduled-sub').textContent = `${scheduled} SCHEDULED`;
+    document.getElementById('metric-scheduled-sub').textContent = `${scheduled} Scheduled`;
   }
 
   function renderPatients() {
     const tbody = document.getElementById('tbody-patients');
-    if (!tbody) return;
-    const query = (document.getElementById('search-patients')?.value || '').toLowerCase();
+    const dashTbody = document.getElementById('tbody-dash-patients');
+    const query = (document.getElementById('global-search')?.value || '').toLowerCase();
 
     const filtered = state.patients.filter(p => {
       return p.name.toLowerCase().includes(query) ||
@@ -501,46 +524,74 @@
              p.address.toLowerCase().includes(query);
     });
 
-    if (!filtered.length) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="7" class="empty-state-cell">
-            <div class="empty-state">
-              <div class="empty-state-title">${query ? 'NO MATCHING PATIENTS' : 'NO PATIENTS REGISTERED'}</div>
-              <div class="empty-state-desc">${query ? 'No records match your search criteria.' : 'Click "+ ADD PATIENT" to create the first patient entry.'}</div>
-            </div>
-          </td>
-        </tr>
-      `;
-      return;
+    // Render Dashboard preview table
+    if (dashTbody) {
+      if (!state.patients.length) {
+        dashTbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="empty-table-cell">
+              <div class="empty-state-box">
+                <div class="empty-state-h">No patients registered.</div>
+                <div class="empty-state-p">Click "+ Register Patient" on the right to add admissions.</div>
+              </div>
+            </td>
+          </tr>
+        `;
+      } else {
+        dashTbody.innerHTML = state.patients.slice(0, 5).map(p => `
+          <tr>
+            <td class="td-mono">#${p.id}</td>
+            <td class="td-bold">${escapeHtml(p.name)}</td>
+            <td>${p.age} YRS • ${escapeHtml(p.gender).toUpperCase()}</td>
+            <td>${escapeHtml(p.phone)}</td>
+            <td><span class="badge-blood">${p.bloodGroup}</span></td>
+            <td>${escapeHtml(p.address)}</td>
+          </tr>
+        `).join('');
+      }
     }
 
-    tbody.innerHTML = filtered.map(p => `
-      <tr>
-        <td class="cell-id">#${p.id}</td>
-        <td class="cell-bold">${escapeHtml(p.name)}</td>
-        <td>${p.age} YRS • ${escapeHtml(p.gender).toUpperCase()}</td>
-        <td>${escapeHtml(p.phone)}</td>
-        <td><span class="badge-blood">${p.bloodGroup}</span></td>
-        <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(p.address)}</td>
-        <td class="text-right">
-          <div class="cell-actions">
-            <button class="btn-icon" onclick="editPatient(${p.id})" title="Edit Patient">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+    // Render Main Patients table
+    if (tbody) {
+      if (!filtered.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="empty-table-cell">
+              <div class="empty-state-box">
+                <div class="empty-state-h">${query ? 'No matching patients.' : 'No patients registered.'}</div>
+                <div class="empty-state-p">${query ? 'Try modifying your search keywords.' : 'Click "+ REGISTER PATIENT" above to add an admission.'}</div>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(p => `
+        <tr>
+          <td class="td-mono">#${p.id}</td>
+          <td class="td-bold">${escapeHtml(p.name)}</td>
+          <td>${p.age} YRS • ${escapeHtml(p.gender).toUpperCase()}</td>
+          <td>${escapeHtml(p.phone)}</td>
+          <td><span class="badge-blood">${p.bloodGroup}</span></td>
+          <td style="max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(p.address)}</td>
+          <td class="text-right">
+            <button class="btn-action-icon" onclick="editPatient(${p.id})" title="Edit Patient">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
             </button>
-            <button class="btn-icon danger" onclick="deletePatient(${p.id})" title="Delete Patient">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+            <button class="btn-action-icon danger" onclick="deletePatient(${p.id})" title="Delete Patient">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
             </button>
-          </div>
-        </td>
-      </tr>
-    `).join('');
+          </td>
+        </tr>
+      `).join('');
+    }
   }
 
   function renderDoctors() {
     const tbody = document.getElementById('tbody-doctors');
     if (!tbody) return;
-    const query = (document.getElementById('search-doctors')?.value || '').toLowerCase();
+    const query = (document.getElementById('global-search')?.value || '').toLowerCase();
 
     const filtered = state.doctors.filter(d => {
       return d.name.toLowerCase().includes(query) ||
@@ -551,10 +602,10 @@
     if (!filtered.length) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="6" class="empty-state-cell">
-            <div class="empty-state">
-              <div class="empty-state-title">${query ? 'NO MATCHING DOCTORS' : 'NO MEDICAL STAFF REGISTERED'}</div>
-              <div class="empty-state-desc">${query ? 'No physicians match your search filter.' : 'Click "+ ADD DOCTOR" to record hospital medical staff.'}</div>
+          <td colspan="6" class="empty-table-cell">
+            <div class="empty-state-box">
+              <div class="empty-state-h">${query ? 'No matching doctors.' : 'No medical staff recorded.'}</div>
+              <div class="empty-state-p">${query ? 'Check spelling or clear the search filter.' : 'Click "+ ADD DOCTOR" to record hospital staff.'}</div>
             </div>
           </td>
         </tr>
@@ -564,20 +615,18 @@
 
     tbody.innerHTML = filtered.map(d => `
       <tr>
-        <td class="cell-id">#${d.id}</td>
-        <td class="cell-bold">${escapeHtml(d.name)}</td>
+        <td class="td-mono">#${d.id}</td>
+        <td class="td-bold">${escapeHtml(d.name)}</td>
         <td><span class="badge-specialty">${escapeHtml(d.specialty).toUpperCase()}</span></td>
         <td>${escapeHtml(d.phone)}</td>
         <td>${escapeHtml(d.room)}</td>
         <td class="text-right">
-          <div class="cell-actions">
-            <button class="btn-icon" onclick="editDoctor(${d.id})" title="Edit Doctor">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-            </button>
-            <button class="btn-icon danger" onclick="deleteDoctor(${d.id})" title="Delete Doctor">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-            </button>
-          </div>
+          <button class="btn-action-icon" onclick="editDoctor(${d.id})" title="Edit Doctor">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          </button>
+          <button class="btn-action-icon danger" onclick="deleteDoctor(${d.id})" title="Delete Doctor">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+          </button>
         </td>
       </tr>
     `).join('');
@@ -586,7 +635,7 @@
   function renderAppointments() {
     const tbody = document.getElementById('tbody-appointments');
     if (!tbody) return;
-    const query = (document.getElementById('search-appointments')?.value || '').toLowerCase();
+    const query = (document.getElementById('global-search')?.value || '').toLowerCase();
     const statusFilter = document.getElementById('filter-appointment-status')?.value || 'ALL';
 
     const filtered = state.appointments.filter(a => {
@@ -602,10 +651,10 @@
     if (!filtered.length) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="7" class="empty-state-cell">
-            <div class="empty-state">
-              <div class="empty-state-title">${query ? 'NO MATCHING APPOINTMENTS' : 'NO APPOINTMENTS SCHEDULED'}</div>
-              <div class="empty-state-desc">${query ? 'Try adjusting your search or status filter.' : 'Click "+ SCHEDULE VISIT" to book an appointment.'}</div>
+          <td colspan="7" class="empty-table-cell">
+            <div class="empty-state-box">
+              <div class="empty-state-h">${query ? 'No matching appointments.' : 'No appointments scheduled.'}</div>
+              <div class="empty-state-p">${query ? 'Clear your search filters.' : 'Click "+ SCHEDULE VISIT" above to book an appointment.'}</div>
             </div>
           </td>
         </tr>
@@ -619,21 +668,19 @@
       const statusClass = a.status.toLowerCase();
       return `
         <tr>
-          <td class="cell-id">#${a.id}</td>
-          <td class="cell-bold">${escapeHtml(p.name)}</td>
+          <td class="td-mono">#${a.id}</td>
+          <td class="td-bold">${escapeHtml(p.name)}</td>
           <td>${escapeHtml(d.name)}</td>
-          <td style="font-family:var(--font-mono);">${a.visitDate} @ ${a.visitTime}</td>
+          <td style="font-family:var(--font-mono); font-size:12px;">${a.visitDate} @ ${a.visitTime}</td>
           <td>${escapeHtml(a.reason)}</td>
           <td><span class="badge-status ${statusClass}">${a.status}</span></td>
           <td class="text-right">
-            <div class="cell-actions">
-              <button class="btn-icon" onclick="editAppointment(${a.id})" title="Edit Appointment">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-              </button>
-              <button class="btn-icon danger" onclick="deleteAppointment(${a.id})" title="Cancel Appointment">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-              </button>
-            </div>
+            <button class="btn-action-icon" onclick="editAppointment(${a.id})" title="Edit Appointment">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </button>
+            <button class="btn-action-icon danger" onclick="deleteAppointment(${a.id})" title="Cancel Appointment">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+            </button>
           </td>
         </tr>
       `;
@@ -643,7 +690,7 @@
   function renderRecords() {
     const tbody = document.getElementById('tbody-records');
     if (!tbody) return;
-    const query = (document.getElementById('search-records')?.value || '').toLowerCase();
+    const query = (document.getElementById('global-search')?.value || '').toLowerCase();
 
     const filtered = state.records.filter(r => {
       const p = getPatient(r.patientId);
@@ -656,10 +703,10 @@
     if (!filtered.length) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="7" class="empty-state-cell">
-            <div class="empty-state">
-              <div class="empty-state-title">${query ? 'NO MATCHING RECORDS' : 'NO CLINICAL RECORDS FOUND'}</div>
-              <div class="empty-state-desc">${query ? 'No diagnostic records match your search.' : 'Click "+ ADD RECORD" to log a patient diagnosis and clinical notes.'}</div>
+          <td colspan="7" class="empty-table-cell">
+            <div class="empty-state-box">
+              <div class="empty-state-h">${query ? 'No matching clinical records.' : 'No clinical records logged.'}</div>
+              <div class="empty-state-p">${query ? 'Try different keywords.' : 'Click "+ ADD RECORD" to document patient diagnoses and care plans.'}</div>
             </div>
           </td>
         </tr>
@@ -671,51 +718,50 @@
       const p = getPatient(r.patientId);
       return `
         <tr>
-          <td class="cell-id">#${r.id}</td>
-          <td class="cell-bold">${escapeHtml(p.name)}</td>
-          <td style="font-family:var(--font-mono);">${r.recordDate}</td>
+          <td class="td-mono">#${r.id}</td>
+          <td class="td-bold">${escapeHtml(p.name)}</td>
+          <td style="font-family:var(--font-mono); font-size:12px;">${r.recordDate}</td>
           <td style="font-weight:700;">${escapeHtml(r.diagnosis)}</td>
-          <td style="max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(r.treatment)}</td>
-          <td style="max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-muted);">${escapeHtml(r.notes || "—")}</td>
+          <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(r.treatment)}</td>
+          <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-muted);">${escapeHtml(r.notes || "—")}</td>
           <td class="text-right">
-            <div class="cell-actions">
-              <button class="btn-icon" onclick="viewRecord(${r.id})" title="View Record Details">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-              </button>
-              <button class="btn-icon danger" onclick="deleteRecord(${r.id})" title="Delete Record">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-              </button>
-            </div>
+            <button class="btn-action-icon" onclick="viewRecord(${r.id})" title="View Full Details">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+            <button class="btn-action-icon danger" onclick="deleteRecord(${r.id})" title="Delete Record">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+            </button>
           </td>
         </tr>
       `;
     }).join('');
   }
 
-  function renderDashboardWidgets() {
-    const list = document.getElementById('dashboard-appointments-list');
-    if (!list) return;
+  // Render Right Side Card (CampusBite "YOUR TRAY" Style)
+  function renderTodaySchedule() {
+    const container = document.getElementById('today-schedule-body');
+    if (!container) return;
 
-    const upcoming = state.appointments.slice(0, 5);
-    if (!upcoming.length) {
-      list.innerHTML = `
-        <div style="padding:28px 12px; text-align:center; color:var(--text-muted); font-family:var(--font-mono); font-size:11px;">
-          NO SCHEDULED APPOINTMENTS LOGGED
+    if (!state.appointments.length) {
+      container.innerHTML = `
+        <div class="empty-tray">
+          <div class="empty-tray-title">Your schedule is empty.</div>
+          <div class="empty-tray-desc">Book consultations from the appointments tab to track today's rounds.</div>
         </div>
       `;
       return;
     }
 
-    list.innerHTML = upcoming.map(a => {
+    container.innerHTML = state.appointments.slice(0, 6).map(a => {
       const p = getPatient(a.patientId);
       const d = getDoctor(a.doctorId);
       return `
-        <div class="widget-item">
-          <div class="widget-item-left">
-            <span class="widget-patient">${escapeHtml(p.name)}</span>
-            <span class="widget-doctor">ATTENDING: ${escapeHtml(d.name).toUpperCase()} (${escapeHtml(a.reason)})</span>
+        <div class="schedule-item">
+          <div class="schedule-info">
+            <span class="schedule-patient">${escapeHtml(p.name)}</span>
+            <span class="schedule-doc">${escapeHtml(d.name)} (${escapeHtml(a.reason)})</span>
           </div>
-          <span class="widget-time">${a.visitDate} @ ${a.visitTime}</span>
+          <span class="schedule-time-badge">${a.visitTime}</span>
         </div>
       `;
     }).join('');
@@ -723,10 +769,9 @@
 
   // --- INITIALIZATION ---
   document.addEventListener('DOMContentLoaded', () => {
-    initClock();
     setupNavigation();
     setupModals();
-    setupSearchFilters();
+    setupSearchFilter();
     renderApp();
   });
 
