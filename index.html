@@ -3,98 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MEDX — Hospital Records & Clinical Management System</title>
-  <meta name="description" content="MEDX is an enterprise hospital records management system for patients, medical staff, appointments, and clinical diagnostic logs.">
+  <title>MEDX — Hospital Records</title>
+  <meta name="description" content="MEDX — Minimalist high-precision hospital records and clinical management system.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20%220%22%20%22100%22%20%22100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20%220%22%20%22100%22%20%22100%22><rect width=%22100%22 height=%22100%22 fill=%22black%22/><text x=%2250%25%22 y=%2265%25%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2250%22 font-weight=%22900%22 fill=%22white%22>M</text></svg>">
 </head>
 <body>
   <div class="app-layout">
     <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <div class="brand-logo">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-          </svg>
-        </div>
-        <div class="brand-text">
-          <span class="brand-title">MEDX</span>
-          <span class="brand-tagline">HOSPITAL RECORDS</span>
-        </div>
+        <div class="brand-title">MEDX</div>
+        <div class="brand-tagline">HOSPITAL RECORDS</div>
       </div>
 
       <nav class="sidebar-nav">
         <button class="nav-item active" id="nav-dashboard" data-view="dashboard">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          <span class="nav-index">00</span>
           <span>Control Centre</span>
         </button>
         <button class="nav-item" id="nav-patients" data-view="patients">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="nav-index">01</span>
           <span>Patients</span>
           <span class="nav-badge" id="badge-patients">0</span>
         </button>
         <button class="nav-item" id="nav-doctors" data-view="doctors">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5v6"/><path d="M9 8h6"/></svg>
+          <span class="nav-index">02</span>
           <span>Medical Staff</span>
           <span class="nav-badge" id="badge-doctors">0</span>
         </button>
         <button class="nav-item" id="nav-appointments" data-view="appointments">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
+          <span class="nav-index">03</span>
           <span>Appointments</span>
           <span class="nav-badge" id="badge-appointments">0</span>
         </button>
         <button class="nav-item" id="nav-records" data-view="records">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span class="nav-index">04</span>
           <span>Clinical Records</span>
           <span class="nav-badge" id="badge-records">0</span>
         </button>
       </nav>
 
       <div class="sidebar-footer">
-        <div class="system-status-card">
-          <div class="status-indicator-dot pulse"></div>
-          <div>
-            <div class="status-title">System Status</div>
-            <div class="status-subtitle">Database Active (v1.0)</div>
-          </div>
-        </div>
-        <div class="desktop-badge">
-          <a href="https://github.com/theninthfoundry/medx/releases" target="_blank" rel="noopener noreferrer" class="download-jar-btn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-            Download Java JAR
-          </a>
-        </div>
+        <a href="https://github.com/theninthfoundry/medx/releases" target="_blank" rel="noopener noreferrer" class="download-jar-btn">
+          DOWNLOAD JAR (DESKTOP)
+        </a>
+        <a href="https://github.com/theninthfoundry/medx" target="_blank" rel="noopener noreferrer" class="download-jar-btn" style="margin-top: 6px;">
+          GITHUB REPOSITORY
+        </a>
       </div>
     </aside>
 
     <!-- MAIN WRAPPER -->
     <div class="main-wrapper">
-      <!-- TOP NAVIGATION BAR -->
-      <header class="topbar">
-        <div class="topbar-left">
-          <span class="topbar-breadcrumb">CLINICAL RECORDS & PORTAL</span>
-          <div class="live-pill">
-            <span class="pulse-dot"></span>
-            LIVE WORKSPACE
-          </div>
-        </div>
-        <div class="topbar-right">
-          <div class="clock-display" id="clock-display">--:--:--</div>
-          <button class="btn btn-secondary btn-sm" id="btn-seed-data" title="Reload clean sample hospital records">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
-            Reset Sample Data
-          </button>
-          <a href="https://github.com/theninthfoundry/medx" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-            GitHub Repo
-          </a>
-        </div>
-      </header>
-
       <!-- MAIN CONTENT VIEWS -->
       <main class="content-container">
 
@@ -103,56 +67,52 @@
           <div class="view-header">
             <div class="eyebrow">CONTROL CENTRE</div>
             <h1 class="heading">Records. In order.</h1>
-            <p class="description">A clear, unified view of hospital admissions, attending physicians, and active patient schedules.</p>
+            <p class="description">A clear, uncompromising view of hospital admissions, medical staff, and clinical appointments.</p>
           </div>
 
-          <!-- METRICS CARDS -->
+          <!-- METRICS GRID -->
           <div class="metrics-grid">
             <div class="metric-card">
               <div class="metric-header">
                 <span class="metric-label">REGISTERED PATIENTS</span>
-                <span class="metric-icon">👥</span>
+                <span class="metric-index">01</span>
               </div>
               <div class="metric-value" id="metric-patients-count">0</div>
               <div class="metric-footer">
-                <span class="trend-up">+ Active Records</span>
-                <span class="metric-sub">Across all wards</span>
+                <span class="metric-status">ACTIVE DATABASE</span>
               </div>
             </div>
 
             <div class="metric-card">
               <div class="metric-header">
                 <span class="metric-label">MEDICAL STAFF</span>
-                <span class="metric-icon">🩺</span>
+                <span class="metric-index">02</span>
               </div>
               <div class="metric-value" id="metric-doctors-count">0</div>
               <div class="metric-footer">
-                <span class="trend-up">On Duty</span>
-                <span class="metric-sub">Physicians & Surgeons</span>
+                <span class="metric-status">ATTENDING PHYSICIANS</span>
               </div>
             </div>
 
             <div class="metric-card">
               <div class="metric-header">
                 <span class="metric-label">APPOINTMENTS</span>
-                <span class="metric-icon">📅</span>
+                <span class="metric-index">03</span>
               </div>
               <div class="metric-value" id="metric-appointments-count">0</div>
               <div class="metric-footer">
-                <span class="trend-blue" id="metric-scheduled-sub">0 Scheduled</span>
-                <span class="metric-sub">Visits queued</span>
+                <span class="metric-status" id="metric-scheduled-sub">0 SCHEDULED</span>
               </div>
             </div>
 
             <div class="metric-card">
               <div class="metric-header">
                 <span class="metric-label">CLINICAL RECORDS</span>
-                <span class="metric-icon">📋</span>
+                <span class="metric-index">04</span>
               </div>
               <div class="metric-value" id="metric-records-count">0</div>
               <div class="metric-footer">
-                <span class="trend-emerald">Permanent Archive</span>
-                <span class="metric-sub">Diagnoses & Treatments</span>
+                <span class="metric-status">DIAGNOSTIC ARCHIVE</span>
               </div>
             </div>
           </div>
@@ -163,48 +123,48 @@
             <div class="card-panel">
               <div class="panel-header">
                 <h3 class="panel-title">QUICK ACTIONS</h3>
-                <span class="panel-badge">ONE-CLICK</span>
+                <span class="panel-tag">OPERATIONS</span>
               </div>
               <div class="quick-actions-list">
                 <button class="action-row-btn" id="qa-add-patient">
-                  <div class="action-btn-icon">+</div>
+                  <div class="action-btn-index">+01</div>
                   <div class="action-btn-text">
                     <strong>REGISTER PATIENT</strong>
-                    <span>Create patient profile, contact and blood group info</span>
+                    <span>Create patient record, blood group, age and contact details</span>
                   </div>
                 </button>
                 <button class="action-row-btn" id="qa-add-doctor">
-                  <div class="action-btn-icon">+</div>
+                  <div class="action-btn-index">+02</div>
                   <div class="action-btn-text">
-                    <strong>ADD MEDICAL STAFF</strong>
-                    <span>Register new doctor, department specialty, room #</span>
+                    <strong>REGISTER MEDICAL STAFF</strong>
+                    <span>Add doctor, department specialty, clinic and room allocation</span>
                   </div>
                 </button>
                 <button class="action-row-btn" id="qa-add-appointment">
-                  <div class="action-btn-icon">+</div>
+                  <div class="action-btn-index">+03</div>
                   <div class="action-btn-text">
-                    <strong>BOOK APPOINTMENT</strong>
-                    <span>Schedule consultation with attending doctor</span>
+                    <strong>SCHEDULE APPOINTMENT</strong>
+                    <span>Book patient consultation with assigned physician</span>
                   </div>
                 </button>
                 <button class="action-row-btn" id="qa-add-record">
-                  <div class="action-btn-icon">+</div>
+                  <div class="action-btn-index">+04</div>
                   <div class="action-btn-text">
                     <strong>LOG CLINICAL RECORD</strong>
-                    <span>Enter clinical diagnosis, prescribed treatment, notes</span>
+                    <span>Enter diagnosis, treatment plan, medication and clinical observations</span>
                   </div>
                 </button>
               </div>
             </div>
 
-            <!-- UPCOMING APPOINTMENTS WIDGET -->
+            <!-- RECENT APPOINTMENTS -->
             <div class="card-panel">
               <div class="panel-header">
-                <h3 class="panel-title">TODAY'S SCHEDULE</h3>
-                <button class="btn btn-link btn-xs" id="btn-goto-appointments">View All &rarr;</button>
+                <h3 class="panel-title">APPOINTMENT LOG</h3>
+                <button class="btn btn-link btn-xs" id="btn-goto-appointments">VIEW ALL &rarr;</button>
               </div>
               <div class="widget-list" id="dashboard-appointments-list">
-                <!-- Rendered dynamically -->
+                <!-- Injected via JavaScript -->
               </div>
             </div>
           </div>
@@ -213,20 +173,18 @@
         <!-- VIEW: PATIENTS -->
         <section class="view-section" id="view-patients">
           <div class="view-header">
-            <div class="eyebrow">PEOPLE / 01</div>
+            <div class="eyebrow">DIRECTORY / 01</div>
             <h1 class="heading">Patients</h1>
-            <p class="description">Register, search, and maintain complete patient admission details.</p>
+            <p class="description">Register, search, and manage verified patient demographic and admission records.</p>
           </div>
 
           <div class="toolbar">
             <div class="search-box">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-              <input type="text" id="search-patients" placeholder="Search patients by name, phone, blood group...">
+              <input type="text" id="search-patients" placeholder="Search by name, phone, blood group, address...">
             </div>
             <div class="toolbar-actions">
               <button class="btn btn-primary" id="btn-open-patient-modal">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add Patient
+                + ADD PATIENT
               </button>
             </div>
           </div>
@@ -254,20 +212,18 @@
         <!-- VIEW: DOCTORS -->
         <section class="view-section" id="view-doctors">
           <div class="view-header">
-            <div class="eyebrow">PEOPLE / 02</div>
+            <div class="eyebrow">DIRECTORY / 02</div>
             <h1 class="heading">Medical Staff</h1>
-            <p class="description">Maintain the hospital's physician directory, clinical specialties, and room numbers.</p>
+            <p class="description">Maintain physician directory, clinical specialties, and room allocation.</p>
           </div>
 
           <div class="toolbar">
             <div class="search-box">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-              <input type="text" id="search-doctors" placeholder="Search staff by name, specialty, room...">
+              <input type="text" id="search-doctors" placeholder="Search by physician name, specialty, room...">
             </div>
             <div class="toolbar-actions">
               <button class="btn btn-primary" id="btn-open-doctor-modal">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add Doctor
+                + ADD DOCTOR
               </button>
             </div>
           </div>
@@ -277,7 +233,7 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>DOCTOR NAME</th>
+                  <th>PHYSICIAN NAME</th>
                   <th>SPECIALTY</th>
                   <th>PHONE</th>
                   <th>ROOM / CLINIC</th>
@@ -296,24 +252,22 @@
           <div class="view-header">
             <div class="eyebrow">SCHEDULING / 03</div>
             <h1 class="heading">Appointments</h1>
-            <p class="description">Schedule patient visits, assign attending specialists, and track appointment statuses.</p>
+            <p class="description">Schedule visits, assign attending specialists, and track appointment statuses.</p>
           </div>
 
           <div class="toolbar">
             <div class="search-box">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
               <input type="text" id="search-appointments" placeholder="Search by patient, doctor, reason, status...">
             </div>
             <div class="toolbar-actions">
               <select id="filter-appointment-status" class="select-filter" title="Filter appointments by status" aria-label="Filter appointments by status">
-                <option value="ALL">All Statuses</option>
-                <option value="Scheduled">Scheduled</option>
-                <option value="Completed">Completed</option>
-                <option value="Cancelled">Cancelled</option>
+                <option value="ALL">ALL STATUSES</option>
+                <option value="Scheduled">SCHEDULED</option>
+                <option value="Completed">COMPLETED</option>
+                <option value="Cancelled">CANCELLED</option>
               </select>
               <button class="btn btn-primary" id="btn-open-appointment-modal">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Schedule Visit
+                + SCHEDULE VISIT
               </button>
             </div>
           </div>
@@ -343,18 +297,16 @@
           <div class="view-header">
             <div class="eyebrow">CLINICAL / 04</div>
             <h1 class="heading">Medical Records</h1>
-            <p class="description">Permanent clinical history: diagnoses, treatments, prescriptions, and physician notes.</p>
+            <p class="description">Permanent clinical documentation: diagnoses, treatments, prescriptions, and notes.</p>
           </div>
 
           <div class="toolbar">
             <div class="search-box">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-              <input type="text" id="search-records" placeholder="Search by diagnosis, treatment, patient...">
+              <input type="text" id="search-records" placeholder="Search by patient, diagnosis, treatment, notes...">
             </div>
             <div class="toolbar-actions">
               <button class="btn btn-primary" id="btn-open-record-modal">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add Record
+                + ADD RECORD
               </button>
             </div>
           </div>
@@ -390,21 +342,21 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title" id="modal-patient-title">Add Patient</h3>
-        <button class="modal-close" data-close="modal-patient">&times;</button>
+        <button class="modal-close" data-close="modal-patient" aria-label="Close modal">&times;</button>
       </div>
       <form id="form-patient">
         <input type="hidden" id="patient-id">
         <div class="form-group">
-          <label for="patient-name">Full Name *</label>
+          <label for="patient-name">FULL NAME *</label>
           <input type="text" id="patient-name" required placeholder="e.g. John Doe">
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="patient-age">Age *</label>
+            <label for="patient-age">AGE *</label>
             <input type="number" id="patient-age" min="0" max="120" required placeholder="35">
           </div>
           <div class="form-group">
-            <label for="patient-gender">Gender *</label>
+            <label for="patient-gender">GENDER *</label>
             <select id="patient-gender" required>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
@@ -414,11 +366,11 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="patient-phone">Phone Number *</label>
+            <label for="patient-phone">PHONE NUMBER *</label>
             <input type="tel" id="patient-phone" required placeholder="+1 555-0192">
           </div>
           <div class="form-group">
-            <label for="patient-blood">Blood Group *</label>
+            <label for="patient-blood">BLOOD GROUP *</label>
             <select id="patient-blood" required>
               <option value="A+">A+</option>
               <option value="A-">A-</option>
@@ -432,12 +384,12 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="patient-address">Address *</label>
-          <textarea id="patient-address" rows="2" required placeholder="Street, City, Postal Code"></textarea>
+          <label for="patient-address">ADDRESS *</label>
+          <textarea id="patient-address" rows="2" required placeholder="Street address, city, postal code"></textarea>
         </div>
         <div class="modal-actions">
-          <button type="button" class="btn btn-secondary" data-close="modal-patient">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="btn-save-patient">Save Patient</button>
+          <button type="button" class="btn btn-secondary" data-close="modal-patient">CANCEL</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-patient">SAVE PATIENT</button>
         </div>
       </form>
     </div>
@@ -448,16 +400,16 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title" id="modal-doctor-title">Add Doctor</h3>
-        <button class="modal-close" data-close="modal-doctor">&times;</button>
+        <button class="modal-close" data-close="modal-doctor" aria-label="Close modal">&times;</button>
       </div>
       <form id="form-doctor">
         <input type="hidden" id="doctor-id">
         <div class="form-group">
-          <label for="doctor-name">Doctor Name *</label>
+          <label for="doctor-name">DOCTOR NAME *</label>
           <input type="text" id="doctor-name" required placeholder="e.g. Dr. Sarah Jenkins, MD">
         </div>
         <div class="form-group">
-          <label for="doctor-specialty">Specialty *</label>
+          <label for="doctor-specialty">SPECIALTY *</label>
           <select id="doctor-specialty" required>
             <option value="General Medicine">General Medicine</option>
             <option value="Cardiology">Cardiology</option>
@@ -471,17 +423,17 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="doctor-phone">Contact Phone *</label>
+            <label for="doctor-phone">CONTACT PHONE *</label>
             <input type="tel" id="doctor-phone" required placeholder="+1 555-0344">
           </div>
           <div class="form-group">
-            <label for="doctor-room">Room / Clinic *</label>
+            <label for="doctor-room">ROOM / CLINIC *</label>
             <input type="text" id="doctor-room" required placeholder="Suite 302, West Wing">
           </div>
         </div>
         <div class="modal-actions">
-          <button type="button" class="btn btn-secondary" data-close="modal-doctor">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="btn-save-doctor">Save Doctor</button>
+          <button type="button" class="btn btn-secondary" data-close="modal-doctor">CANCEL</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-doctor">SAVE DOCTOR</button>
         </div>
       </form>
     </div>
@@ -491,39 +443,39 @@
   <div class="modal-backdrop" id="modal-appointment">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title" id="modal-appointment-title">Schedule Appointment</h3>
-        <button class="modal-close" data-close="modal-appointment">&times;</button>
+        <h3 class="modal-title" id="modal-appointment-title">Schedule Visit</h3>
+        <button class="modal-close" data-close="modal-appointment" aria-label="Close modal">&times;</button>
       </div>
       <form id="form-appointment">
         <input type="hidden" id="appointment-id">
         <div class="form-group">
-          <label for="appointment-patient">Select Patient *</label>
+          <label for="appointment-patient">SELECT PATIENT *</label>
           <select id="appointment-patient" required>
             <!-- Injected dynamically -->
           </select>
         </div>
         <div class="form-group">
-          <label for="appointment-doctor">Attending Doctor *</label>
+          <label for="appointment-doctor">ATTENDING DOCTOR *</label>
           <select id="appointment-doctor" required>
             <!-- Injected dynamically -->
           </select>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="appointment-date">Visit Date *</label>
+            <label for="appointment-date">VISIT DATE *</label>
             <input type="date" id="appointment-date" required>
           </div>
           <div class="form-group">
-            <label for="appointment-time">Visit Time *</label>
+            <label for="appointment-time">VISIT TIME *</label>
             <input type="time" id="appointment-time" required>
           </div>
         </div>
         <div class="form-group">
-          <label for="appointment-reason">Reason for Visit *</label>
-          <input type="text" id="appointment-reason" required placeholder="e.g. Annual cardiology checkup">
+          <label for="appointment-reason">REASON FOR CONSULTATION *</label>
+          <input type="text" id="appointment-reason" required placeholder="e.g. Annual cardiology assessment">
         </div>
         <div class="form-group">
-          <label for="appointment-status">Status *</label>
+          <label for="appointment-status">STATUS *</label>
           <select id="appointment-status" required>
             <option value="Scheduled">Scheduled</option>
             <option value="Completed">Completed</option>
@@ -531,8 +483,8 @@
           </select>
         </div>
         <div class="modal-actions">
-          <button type="button" class="btn btn-secondary" data-close="modal-appointment">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="btn-save-appointment">Save Appointment</button>
+          <button type="button" class="btn btn-secondary" data-close="modal-appointment">CANCEL</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-appointment">SAVE APPOINTMENT</button>
         </div>
       </form>
     </div>
@@ -543,35 +495,35 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title" id="modal-record-title">Add Clinical Record</h3>
-        <button class="modal-close" data-close="modal-record">&times;</button>
+        <button class="modal-close" data-close="modal-record" aria-label="Close modal">&times;</button>
       </div>
       <form id="form-record">
         <input type="hidden" id="record-id">
         <div class="form-group">
-          <label for="record-patient">Patient *</label>
+          <label for="record-patient">SELECT PATIENT *</label>
           <select id="record-patient" required>
             <!-- Injected dynamically -->
           </select>
         </div>
         <div class="form-group">
-          <label for="record-date">Record Date *</label>
+          <label for="record-date">RECORD DATE *</label>
           <input type="date" id="record-date" required>
         </div>
         <div class="form-group">
-          <label for="record-diagnosis">Clinical Diagnosis *</label>
+          <label for="record-diagnosis">CLINICAL DIAGNOSIS *</label>
           <input type="text" id="record-diagnosis" required placeholder="e.g. Type II Diabetes Mellitus with Mild Neuropathy">
         </div>
         <div class="form-group">
-          <label for="record-treatment">Prescribed Treatment / Medication *</label>
-          <textarea id="record-treatment" rows="2" required placeholder="e.g. Metformin 500mg BID, dietary modifications"></textarea>
+          <label for="record-treatment">PRESCRIBED TREATMENT / MEDICATION *</label>
+          <textarea id="record-treatment" rows="2" required placeholder="e.g. Metformin 500mg BID, low-sodium dietary regimen"></textarea>
         </div>
         <div class="form-group">
-          <label for="record-notes">Clinical Notes</label>
-          <textarea id="record-notes" rows="3" placeholder="Physician observation, lab indicators, follow-up recommendations..."></textarea>
+          <label for="record-notes">CLINICAL OBSERVATIONS & NOTES</label>
+          <textarea id="record-notes" rows="3" placeholder="Physician observation, lab values, recommended follow-up..."></textarea>
         </div>
         <div class="modal-actions">
-          <button type="button" class="btn btn-secondary" data-close="modal-record">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="btn-save-record">Save Clinical Record</button>
+          <button type="button" class="btn btn-secondary" data-close="modal-record">CANCEL</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-record">SAVE RECORD</button>
         </div>
       </form>
     </div>
@@ -581,14 +533,14 @@
   <div class="modal-backdrop" id="modal-view-record">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title">Clinical Record Details</h3>
-        <button class="modal-close" data-close="modal-view-record">&times;</button>
+        <h3 class="modal-title">Clinical Record Detail</h3>
+        <button class="modal-close" data-close="modal-view-record" aria-label="Close modal">&times;</button>
       </div>
       <div class="record-detail-body" id="record-detail-content">
         <!-- Rendered dynamically -->
       </div>
       <div class="modal-actions">
-        <button type="button" class="btn btn-secondary" data-close="modal-view-record">Close</button>
+        <button type="button" class="btn btn-secondary" data-close="modal-view-record">CLOSE</button>
       </div>
     </div>
   </div>
