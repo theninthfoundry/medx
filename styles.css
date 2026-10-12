@@ -1,24 +1,24 @@
 /* ==========================================================================
-   MEDX — EDITORIAL PAPER & INK DESIGN SYSTEM
-   EXACT CAMPUSBITE INSPIRED WARM CREAM AESTHETIC & EDITORIAL SERIF TYPOGRAPHY
+   MEDX — EDITORIAL MINIMALIST SYSTEM
+   PURE WHITE BACKGROUND • SHARP BLACK TYPOGRAPHY • EDITORIAL SERIF
    ========================================================================== */
 
 :root {
-  --bg-page: #fbf8f2;
+  --bg-page: #ffffff;
   --bg-surface: #ffffff;
-  --bg-surface-soft: #f4eee2;
-  --bg-pill: #ece5d6;
+  --bg-surface-soft: #f7f7f7;
+  --bg-pill: #eeeeee;
   --bg-input: #ffffff;
 
-  --border-subtle: #e6dfd1;
-  --border-medium: #ded5c4;
-  --border-dark: #121212;
+  --border-subtle: #e5e5e5;
+  --border-medium: #d4d4d4;
+  --border-dark: #000000;
 
-  --text-main: #141414;
-  --text-secondary: #575249;
-  --text-muted: #787369;
+  --text-main: #000000;
+  --text-secondary: #404040;
+  --text-muted: #737373;
 
-  --accent-ink: #141414;
+  --accent-ink: #000000;
   --accent-red: #b91c1c;
 
   --font-serif: 'DM Serif Display', Georgia, serif;
@@ -57,7 +57,7 @@ body {
    HEADER (ROW 1)
    -------------------------------------------------------------------------- */
 .header-main {
-  background-color: var(--bg-page);
+  background-color: #ffffff;
   border-bottom: 1px solid var(--border-subtle);
   padding: 14px 0;
 }
@@ -203,7 +203,7 @@ body {
    SUB-NAV BAR (ROW 2)
    -------------------------------------------------------------------------- */
 .sub-nav-bar {
-  background-color: var(--bg-page);
+  background-color: #ffffff;
   border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -248,6 +248,7 @@ body {
   max-width: 1400px;
   margin: 0 auto;
   padding: 34px 36px 64px 36px;
+  background-color: #ffffff;
 }
 
 .hero-section {
@@ -307,7 +308,7 @@ body {
 }
 
 .search-input-box {
-  background: var(--bg-surface);
+  background: #ffffff;
   border: 1px solid var(--border-medium);
   border-radius: 4px;
   padding: 0 14px;
@@ -446,7 +447,7 @@ body {
 }
 
 .stat-card {
-  background: var(--bg-surface);
+  background: #ffffff;
   border: 1px solid var(--border-subtle);
   border-radius: 4px;
   padding: 20px;
@@ -498,7 +499,7 @@ body {
    SECTION BOX & TABLES
    -------------------------------------------------------------------------- */
 .section-box {
-  background: var(--bg-surface);
+  background: #ffffff;
   border: 1px solid var(--border-subtle);
   border-radius: 4px;
   padding: 22px;
@@ -534,7 +535,7 @@ body {
 }
 
 .table-wrap {
-  background: var(--bg-surface);
+  background: #ffffff;
   border: 1px solid var(--border-subtle);
   border-radius: 4px;
   overflow-x: auto;
@@ -547,7 +548,7 @@ body {
 }
 
 .editorial-table thead {
-  background: var(--bg-page);
+  background: #fafafa;
   border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -570,7 +571,7 @@ body {
 }
 
 .editorial-table tbody tr:hover {
-  background: #fbf9f4;
+  background: #f7f7f7;
 }
 
 .editorial-table tbody tr:last-child td {
@@ -670,7 +671,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   RIGHT SIDEBAR COLUMN (CAMPUSBITE "YOUR TRAY" STYLE)
+   RIGHT SIDEBAR COLUMN
    -------------------------------------------------------------------------- */
 .sidebar-column {
   display: flex;
@@ -679,7 +680,7 @@ body {
 }
 
 .side-card {
-  background: var(--bg-surface);
+  background: #ffffff;
   border: 1px solid var(--border-subtle);
   border-radius: 4px;
   padding: 22px;
@@ -801,7 +802,7 @@ body {
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  background: var(--bg-page);
+  background: #ffffff;
   border: 1px solid var(--border-medium);
   border-radius: 4px;
   cursor: pointer;
@@ -861,8 +862,8 @@ body {
 }
 
 .btn-dark:hover {
-  background: #333333;
-  border-color: #333333;
+  background: #262626;
+  border-color: #262626;
 }
 
 .btn-subtle {
@@ -937,7 +938,7 @@ body {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(18, 18, 18, 0.45);
+  background: rgba(0, 0, 0, 0.45);
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   display: none;
@@ -952,12 +953,12 @@ body {
 }
 
 .modal-card {
-  background: var(--bg-surface);
+  background: #ffffff;
   border: 1px solid var(--border-medium);
   border-radius: 4px;
   width: 100%;
   max-width: 520px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
   overflow: hidden;
 }
 
@@ -967,7 +968,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--bg-page);
+  background: #fafafa;
 }
 
 .modal-title {
@@ -1022,7 +1023,7 @@ input[type="time"],
 select,
 textarea {
   width: 100%;
-  background: var(--bg-page);
+  background: #ffffff;
   border: 1px solid var(--border-medium);
   border-radius: 3px;
   padding: 9px 12px;
@@ -1082,7 +1083,7 @@ textarea {
 }
 
 .detail-box {
-  background: var(--bg-page);
+  background: #fafafa;
   padding: 12px;
   border-radius: 3px;
   border: 1px solid var(--border-medium);
