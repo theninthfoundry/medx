@@ -107,11 +107,12 @@
   // --- CLOCK & TIMERS ---
   function initClock() {
     const clockEl = document.getElementById('clock-display');
+    if (!clockEl) return;
     function tick() {
       const now = new Date();
       const timeStr = now.toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
       const dateStr = now.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
-      if (clockEl) clockEl.textContent = `${dateStr.toUpperCase()} • ${timeStr}`;
+      clockEl.textContent = `${dateStr.toUpperCase()} • ${timeStr}`;
     }
     tick();
     setInterval(tick, 1000);
